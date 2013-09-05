@@ -4,16 +4,17 @@ exports.isValid = isValid;
 var rander = require('rander');
 var crypto = require('crypto');
 
-function md5 (str) {
-	return crypto.createHash('md5').update(str).digest('hex');
+
+function hash (pass, length) {
+  length =  length || 8;
+  return _hash(pass, rander.string(length));
 }
 
-function hash (pass, salt) {
-  salt = salt || parseInt(rander.number(10)).toString(16);
-  return salt + '.' + md5(pass + salt);
+function _hash (pass, salt) {
+  return salt + '.' + crypto.createHash('md5').update(pass + salt).digest('hex')
 }
 
 function isValid (pass, hashstring) {
   var salt = hashstring.split('.')[0];
-  return hash(pass, salt) == hashstring;
+  return _hash(pass, salt) == hashstring;
 }
