@@ -5,7 +5,7 @@ var safepass = require('../index');
 
 describe('safepass module test', function () {
   var passwords = [];
-  var hashes;
+  var hashs;
   var count = 10;
   
   before(function (done) {
@@ -17,19 +17,36 @@ describe('safepass module test', function () {
   });
 
   it('should hash password', function () {
-    hashes = passwords.map(function (pass) {
+    hashs = passwords.map(function (pass) {
+      // console.log(pass);
       var hash = safepass.hash(pass);
       assert.ok(hash.indexOf('.') > 1);
       assert.ok(hash.length > pass.length);
       assert.ok(typeof hash == 'string');
-      return safepass.hash(pass);
+      return hash;
     });
-    // console.log(hashes);
+    // console.log(hashs);
   });
   
-  it('isValid function should work', function () {
-    hashes.forEach(function (hash, i) {
+  it('isValid should work', function () {
+    hashs.forEach(function (hash, i) {
       assert.ok(safepass.isValid(passwords[i], hash));
     });
   });
+  
+  
+  it('test null value', function () {
+    hash = safepass.hash('');
+    // console.log(hash);
+    assert.ok(safepass.isValid('', hash));
+  });
+  
+  it('test chain way', function () {
+    password = 'im password';
+    hash = safepass.hash(password);
+    assert.ok(safepass.set(hash).isValid(password));
+    // null password test if null password is valid.
+    assert.ok(safepass.set(safepass.hash('')).isValid(''));
+  });
+  
 });

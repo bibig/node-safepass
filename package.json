@@ -1,7 +1,7 @@
 {
   "author": "Bibig <bibig@me.com> (https://twitter.com/bibig)",
   "name": "safepass",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "hash password with a random salt",
   "preferGlobal": "true",
   "main": "index.js",

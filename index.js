@@ -1,5 +1,6 @@
 exports.hash = hash;
 exports.isValid = isValid;
+exports.set = set;
 
 var rander = require('rander');
 var crypto = require('crypto');
@@ -17,4 +18,15 @@ function _hash (pass, salt) {
 function isValid (pass, hashstring) {
   var salt = hashstring.split('.')[0];
   return _hash(pass, salt) == hashstring;
+}
+
+
+// chain way
+function set (hash) {
+  return {
+    hash: hash,
+    isValid: function (pass) {
+      return isValid(pass, this.hash);
+    }
+  };
 }
